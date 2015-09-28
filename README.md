@@ -1,2 +1,2 @@
-# chess
+# Chess
 GitChess for great justice!
