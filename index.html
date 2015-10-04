@@ -1,0 +1,58 @@
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<link type="text/css" rel="stylesheet" href="http://chesstempo.com/css/board-min.css" />
+	    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	    <script type="text/javascript" src="http://chesstempo.com/js/pgnyui.js"></script>
+	    <script type="text/javascript" src="http://chesstempo.com/js/pgnviewer.js"></script>	
+	</head>
+	<body>
+		<div class="container">
+			<div class="col-md-6">
+	        	<div class="page-header"><h1>Games</h1></div>
+	        	<ul class="list-group" id="game-list"></ul>
+			</div>
+			<div class="col-md-6">
+	        	<div class="page-header"><h1 id="gameTitle">Click a game!</h1></div>
+	        	<div id="game-container"></div>
+				<div id="game-moves"></div>
+			</div>
+		</div>
+
+	    <script type="text/javascript">
+	    	var game;
+
+		    $(function() {
+				$("<div>").load("games.txt", function(data){
+					var games = data.split('\n');
+					
+					for(var i = 0;i < games.length-1;i++){
+						var fields = games[i].split(',');
+						
+						$("#game-list")
+							.append("<li game-file='" + fields[1] + "' game-title='" + fields[0] + "' class='list-group-item game'><a href='#'>" + fields[0] + "</a></li>");
+					}
+				});
+
+		    	$(document).on("click", ".game", function(){
+		    		game = createGame($(this).attr("game-file"), $(this).attr("game-title"));
+		    	});
+		    });
+
+	        function createGame(game, gameTitle){
+	        	$("#game-container").empty();
+	        	$("#game-moves").empty();
+				$("#gameTitle").html(gameTitle);
+
+		        return new PgnViewer(
+		        {
+		            boardName: "game",
+		            pgnFile: game,
+		            pieceSet: "leipzig",
+		            pieceSize: 46
+		        });
+	        }
+		</script>
+	</body>
+</html>
